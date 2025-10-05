@@ -1,3 +1,4 @@
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <stdbool.h>
 
@@ -147,7 +148,7 @@ PppDecoder_unescape(PppDecoder *self, PyObject *args)
                 PyObject* frame = Py_BuildValue("y#",
                         self->frame_buf, self->frame_buf_pos - 2);
                 if (PyList_Append(frames, frame) == -1) {
-                    Py_DECREF(frame);
+                    if (frame) Py_DECREF(frame);
                     self->frame_buf_pos = 0;
                     PyBuffer_Release(&buf_in);
                     return NULL;
